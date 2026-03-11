@@ -60,10 +60,15 @@ void yyerror(const char* s) { std::cout<<"ERROR: "<<s<<" "<<yylval; }
 
 program: percent oword lines percent;
 lines: lines line | line;
-line: blocks comm_opt eol | comm_opt eol | eol;
+line: line_no.opt blocks comm_opt eol | 
+      line_no.opt comm_opt eol | 
+      line_no.opt eol;
 blocks: blocks block | block ;
 block: gcode | coordinate | tool | mcode | speed | feed ;
-gcode: group0 | group1 | group2 | group3 | group8 | group12 ;
+gcode: group0 | group1 | group2 | group3 |
+       group5 | group6 | group7 | group8 | 
+       group10 | group12 | group13;
+mcode: mcode4 | mcode6 | mcode7 | mcode8 | mcode9 ;
 
 eol: eol EOL | EOL
 percent: PERCENT eol 
@@ -72,18 +77,41 @@ oword: O INTEGER comm_opt eol
 line_no.opt: %empty | INTEGER;
 comm_opt: %empty | COMMENT;
 
-group0 : G04 | G10 | G28 | G30 | G53 | G92;
-group1 : G00 | G01 | G02 | G03 | G80 | G81 | G82 | G83 | G84 | G85 | G86 | G87 | G88 | G89;
+group0 : G04 | G10 | G28 | G30 | 
+         G53 | G92 | G921 | G922 | G923;
+
+group1 : G00 | G01 | G02 | G03 | 
+         G382 | G80 | G81 | G82 |
+         G83 | G84 | G85 | G86 |
+         G87 | G88 | G89;
+
 group2 : G17 | G18 | G19 ; 
+
 group3 : G90 | G91 ; 
+
 group5 : G93 | G94 ; 
+
 group6 : G20 | G21; 
+
 group7 : G40 | G41 | G42 ; 
+
 group8 : G43 | G49 ; 
+
 group10 : G98 | G99 ; 
-group12 : G54 | G55 | G56 | G57 | G58 | G59 ; 
-group13 : G61 | G64 ; 
-mcode : M06 | M03 | M05 | M09 | M30
+
+group12 : G54 | G55 | G56 | G57 | G58 | G59 | G591 | G592 | G593; 
+
+group13 : G61 | G611 | G64 ; 
+
+mcode4 : M00 | M01 | M02 | M30 | M60;
+
+mcode6 : M06 ; 
+
+mcode7 : M03 | M04 |M05 ;
+
+mcode8 : M07 | M08 | M09 ; 
+
+mcode9 : M48 | M49 ;
 
 coordinate: axis FLOAT
 axis: X | Y | Z | A | B | C

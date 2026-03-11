@@ -1,3 +1,5 @@
+.PHONY: test
+
 gc: parser.c  lex.yy.c
 	g++ parser.c -o gc
 
@@ -13,5 +15,5 @@ clean:
 	rm parser* 
 	rm test.* 
 	
-test:
+test: 
 	./gc test/3.NCF 2> test.3.NCF
