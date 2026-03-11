@@ -55,14 +55,52 @@ void yyerror(const char* s) { std::cout<<"ERROR: "<<s<<" "<<yylval; }
 %token WS
 %token EOL
 %token COMMENT 
+%token SLASH
 
 %%
 
+/*
+arc_tangent_combo = arc_tangent + expression + divided_by + expression .
+binary_operation = binary_operation1 | binary_operation2 | binary_operation3 .
+binary_operation1 = power .
+binary_operation2 = divided_by | modulo | times .
+binary_operation3 = and | exclusive_or | minus | non_exclusive_or | plus .
+comment = message | ordinary_comment .
+comment_character = see explanation above .
+digit = zero | one | two | three | four | five | six | seven | eight | nine .
+expression = left_bracket + real_value + { binary_operation + real_value } + right_bracket .
+line = [block_delete] + [line_number] + {segment} + end_of_line .
+line_number = letter_n + digit + [digit] + [digit] + [digit] + [digit] .
+message = left_parenthesis + {white_space} + letter_m + {white_space} + letter_s +
+{white_space} + letter_g + {white_space} + comma + {comment_character} +
+right_parenthesis .
+mid_line_letter = letter_a | letter_b | letter_c| letter_d | letter_f | letter_g | letter_h | letter_i
+| letter_j | letter_k | letter_l | letter_m | letter_p | letter_q | letter_r | letter_s | letter_t
+| letter_x | letter_y | letter_z .
+mid_line_word = mid_line_letter + real_value .
+ordinary_comment = left_parenthesis + {comment_character} + right_parenthesis .
+ordinary_unary_combo = ordinary_unary_operation + expression .
+ordinary_unary_operation =
+absolute_value | arc_cosine | arc_sine | cosine | e_raised_to |
+fix_down | fix_up | natural_log_of | round | sine | square_root | tangent .
+parameter_index = real_value .
+parameter_setting = parameter_sign + parameter_index + equal_sign + real_value .
+parameter_value = parameter_sign + parameter_index .
+real_number =
+[ plus | minus ] +
+(( digit + { digit } + [decimal_point] + {digit}) | ( decimal_point + digit + {digit})) .
+real_value = real_number | expression | parameter_value | unary_combo .
+segment = mid_line_word | comment | parameter_setting .
+unary_combo = ordinary_unary_combo | arc_tangent_combo .
+white_space = space | tab .
+*/
+
 program: percent oword lines percent;
 lines: lines line | line;
-line: line_no.opt blocks comm_opt eol | 
-      line_no.opt comm_opt eol | 
-      line_no.opt eol;
+line: block_delete_opt line_no.opt blocks_opt comm_opt eol ; 
+// line = [block_delete] + [line_number] + {segment} + end_of_line .
+block_delete_opt: %empty | SLASH ;
+blocks_opt: %empty | blocks ;
 blocks: blocks block | block ;
 block: gcode | coordinate | tool | mcode | speed | feed ;
 gcode: group0 | group1 | group2 | group3 |
