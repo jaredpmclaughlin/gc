@@ -6,3 +6,12 @@ parser.c: gc.y
 
 lex.yy.c: gc.lex
 	flex -s -d gc.lex
+
+clean:
+	rm gc
+	rm *.c
+	rm parser* 
+	rm test.* 
+	
+test:
+	./gc test/3.NCF 2> test.3.NCF
