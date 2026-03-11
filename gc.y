@@ -14,18 +14,39 @@ void yyerror(const char* s) { std::cout<<"ERROR: "<<s<<" "<<yylval; }
 
 
 %token PERCENT O
-%token G00 G01 G02 G03 G80 G81 G82 G83 G84 G85 G86 G87 G88 G89
+// Group 1 
+%token G00 G01 G02 G03 G382 G80 G81 G82 G83 G84 G85 G86 G87 G88 G89
+// Group 2
 %token G17 G18 G19
+// Group 3
 %token G90 G91
+// Group 5
 %token G93 G94
+// Group 6
 %token G20 G21
+// Group 7
 %token G40 G41 G42
+// Group 8
 %token G43 G49
+// Group 10
 %token G98 G99
-%token G54 G55 G56 G57 G58 G59
-%token G61 G64
-%token G04 G10 G28 G30 G53 G92
-%token M00 M01 M02 M30 M60 M06 M03 M04 M05 M07 M08 M09 M48 M49
+// Group 12
+%token G54 G55 G56 G57 G58 G59 G591 G592 G593
+// Group 13
+%token G61 G611 G64
+// Group 0
+%token G04 G10 G28 G30 G53 G92 G921 G922 G923
+// Group 4
+%token M00 M01 M02 M30 M60 
+// Group 6
+%token M06 
+// Group 7
+%token M03 M04 M05 
+// Group 8
+%token M07 M08 M09
+// Group 9
+%token M48 M49
+
 %token X Y Z A B C
 %token I J K R
 %token T D S
