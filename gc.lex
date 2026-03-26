@@ -25,7 +25,7 @@ S "s"|"S"
 H "h"|"H"
 F "f"|"F"
 
-
+SLASH "/"
 DIGIT [0-9]
 FLOAT "-"?([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)
 COMMENT "(".*")"
@@ -185,6 +185,7 @@ WS [ \t]
 
 \n          return EOL; 
 \r          return EOL; 
+{SLASH}     return SLASH;
 {WS}+       ;
 
 
