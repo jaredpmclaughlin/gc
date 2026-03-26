@@ -95,7 +95,9 @@ unary_combo = ordinary_unary_combo | arc_tangent_combo .
 white_space = space | tab .
 */
 
-program: percent oword lines percent;
+program: percent oword lines_opt percent;
+
+lines_opt: %empty | lines;
 lines: lines line | line;
 line: block_delete_opt line_no.opt blocks_opt comm_opt eol ; 
 // line = [block_delete] + [line_number] + {segment} + end_of_line .
