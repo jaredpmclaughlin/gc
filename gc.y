@@ -47,6 +47,7 @@ void yyerror(const char* s) { std::cout<<"ERROR: "<<s<<" "<<yylval; }
 // Group 9
 %token M48 M49
 
+%token N
 %token X Y Z A B C
 %token I J K R
 %token T D S
@@ -104,7 +105,7 @@ line: block_delete_opt line_no.opt blocks_opt comm_opt eol ;
 block_delete_opt: %empty | SLASH ;
 blocks_opt: %empty | blocks ;
 blocks: blocks block | block ;
-block: gcode | coordinate | tool | mcode | speed | feed ;
+block: gcode | coordinate | tool | mcode | speed | feed | radius ;
 gcode: group0 | group1 | group2 | group3 |
        group5 | group6 | group7 | group8 | 
        group10 | group12 | group13;
@@ -114,7 +115,7 @@ eol: eol EOL | EOL
 percent: PERCENT eol 
 oword: O INTEGER comm_opt eol 
 
-line_no.opt: %empty | INTEGER;
+line_no.opt: %empty | N INTEGER;
 comm_opt: %empty | COMMENT;
 
 group0 : G04 | G10 | G28 | G30 | 
@@ -153,11 +154,13 @@ mcode8 : M07 | M08 | M09 ;
 
 mcode9 : M48 | M49 ;
 
-coordinate: axis FLOAT
+radius: R INTEGER | R FLOAT
+center: I | J | K
+coordinate: axis FLOAT | axis INTEGER | center FLOAT | center INTEGER
 axis: X | Y | Z | A | B | C
 tool: T INTEGER | H INTEGER
 speed: S FLOAT | S INTEGER
-feed: F FLOAT
+feed: F FLOAT | F INTEGER
 
 %%
 int main(int argc, char **argv)

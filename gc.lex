@@ -2,6 +2,7 @@
 #include "parser.h"
 %}
 
+N "n"|"N"
 G "g"|"G"
 M "m"|"M"
 O "o"|"O"
@@ -35,6 +36,7 @@ WS [ \t]
 
 %%
 
+{N}         return N;
 "%"         return PERCENT; 
 {O}         return O;
 
