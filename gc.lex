@@ -26,6 +26,8 @@ S "s"|"S"
 H "h"|"H"
 F "f"|"F"
 
+EOL "\n"|"\r"|"\r\n"
+
 SLASH "/"
 DIGIT [0-9]
 FLOAT "-"?([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)
@@ -185,8 +187,7 @@ WS [ \t]
 {DIGIT}+    {sscanf(yytext,"%d",&yylval); return INTEGER;}
 {FLOAT}     {sscanf(yytext,"%f",&yylval); return FLOAT;}
 
-\n          return EOL; 
-\r          return EOL; 
+{EOL}          return EOL; 
 {SLASH}     return SLASH;
 {WS}+       ;
 

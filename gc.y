@@ -6,6 +6,8 @@
 extern int yylex();
 extern int yylval;
 void yyerror(const char* s) { std::cout<<"ERROR: "<<s<<" "<<yylval; }
+
+int lines=0;
 %}
 
 %define parse.error verbose
@@ -96,12 +98,12 @@ unary_combo = ordinary_unary_combo | arc_tangent_combo .
 white_space = space | tab .
 */
 
-program: percent oword lines_opt percent;
+//program: percent oword lines_opt percent {printf("Lines : %d\n", lines);}
+program: percent oword lines_opt percent 
 
 lines_opt: %empty | lines;
 lines: lines line | line;
-line: block_delete_opt line_no.opt blocks_opt comm_opt eol ; 
-// line = [block_delete] + [line_number] + {segment} + end_of_line .
+line: comm_line | block_delete_opt line_no.opt blocks_opt comm_opt eol 
 block_delete_opt: %empty | SLASH ;
 blocks_opt: %empty | blocks ;
 blocks: blocks block | block ;
@@ -111,12 +113,14 @@ gcode: group0 | group1 | group2 | group3 |
        group10 | group12 | group13;
 mcode: mcode4 | mcode6 | mcode7 | mcode8 | mcode9 ;
 
-eol: eol EOL | EOL
+eol: EOL {lines++;}
+eol_opt: %empty | eol
 percent: PERCENT eol 
 oword: O INTEGER comm_opt eol 
 
 line_no.opt: %empty | N INTEGER;
 comm_opt: %empty | COMMENT;
+comm_line: COMMENT EOL {printf("Comment on line %d.\n", lines);}
 
 group0 : G04 | G10 | G28 | G30 | 
          G53 | G92 | G921 | G922 | G923;
@@ -174,6 +178,7 @@ int main(int argc, char **argv)
     
     yyparse();
 
+    printf("Read %d Lines.\n", lines);
     return 0;
 }
 
